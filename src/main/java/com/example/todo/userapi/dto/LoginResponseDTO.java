@@ -3,25 +3,24 @@ package com.example.todo.userapi.dto;
 import com.example.todo.userapi.entity.UserEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnJava;
 
 import java.time.LocalDate;
 
 @Setter @Getter @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
 @Builder
+@EqualsAndHashCode
 public class LoginResponseDTO {
-    
+
     private String email;
     private String userName;
     @JsonFormat(pattern = "yyyy년 MM월 dd일")
     private LocalDate joinDate;
-    
-    private String token;   // 인증 토큰
-    
-    private String message; //응답 메시지
+
+    private String token; // 인증 토큰
+
+    private String message; // 응답 메시지
 
     // 엔터티를 DTO로 변경
     public LoginResponseDTO(UserEntity userEntity, String token) {

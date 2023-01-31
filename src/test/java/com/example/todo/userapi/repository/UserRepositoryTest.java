@@ -6,14 +6,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
-
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class UserRepositoryTest {
-
     @Autowired UserRepository userRepository;
 
     @Test
@@ -21,15 +19,15 @@ class UserRepositoryTest {
     @Transactional
     @Rollback
     void saveTest() {
-        // given
-        UserEntity user = UserEntity.builder()
-                .email("abc1234@def.com")
-                .password("1234")
-                .userName("말똥이")
-                .build();
-        // when
-        UserEntity savedUser = userRepository.save(user);
-        // then
+        //given
+        UserEntity userEntity = new UserEntity();
+        userEntity.setUserName("말똥이");
+        userEntity.setEmail("abc1234@def.com");
+        userEntity.setPassword("1234");
+
+        //when
+        UserEntity savedUser = userRepository.save(userEntity);
+        //then
         assertNotNull(savedUser);
     }
 
@@ -38,9 +36,9 @@ class UserRepositoryTest {
     void findByEmailTest() {
         // given
         String email = "abc1234@def.com";
-        // when
+        //when
         UserEntity foundUser = userRepository.findByEmail(email);
-        // then
+        //then
         assertEquals("말똥이", foundUser.getUserName());
     }
 
@@ -48,10 +46,10 @@ class UserRepositoryTest {
     @DisplayName("이메일 중복을 체크해야 한다.")
     void existEmailTest() {
         // given
-        String email = "sjflsjd@def.com";
-        // when
+        String email = "safdsf@def.com";
+        //when
         boolean flag = userRepository.existsByEmail(email);
-        // then
+        //then
         assertFalse(flag);
     }
 }

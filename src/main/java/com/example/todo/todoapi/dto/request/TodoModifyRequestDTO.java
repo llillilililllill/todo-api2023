@@ -8,8 +8,8 @@ import javax.validation.constraints.Size;
 @Setter @Getter @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
 @Builder
+@EqualsAndHashCode
 public class TodoModifyRequestDTO {
 
     @NotBlank

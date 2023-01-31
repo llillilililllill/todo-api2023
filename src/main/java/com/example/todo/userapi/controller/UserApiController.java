@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
+@CrossOrigin
 public class UserApiController {
 
     private final UserService userService;
@@ -25,8 +26,9 @@ public class UserApiController {
     // 회원가입 요청 처리
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(
-            @Validated  @RequestBody UserSignUpDTO signUpDTO,
-            BindingResult result) {
+            @Validated @RequestBody UserSignUpDTO signUpDTO
+            , BindingResult result
+    ) {
         log.info("/api/auth/signup POST! - {}", signUpDTO);
 
         if (result.hasErrors()) {
@@ -43,35 +45,35 @@ public class UserApiController {
                     .ok()
                     .body(responseDTO);
         } catch (NoRegisteredArgumentsException e) {
-            // 예외 상황 2가지 (dto가 null인 문제, 이메일이 중복인 문제)
-            log.warn("필수 가입 정보를 다시 확인하세요.");
-            return  ResponseEntity
+            // 예외 상황 2가지 (dto가 null인 문제, 이메일 중복문제)
+            log.warn("필수 가입 정보를 다시확인하세요.");
+            return ResponseEntity
                     .badRequest()
                     .body(e.getMessage());
         } catch (DuplicatedEmailException e) {
             log.warn("중복되었습니다. 다른 이메일을 작성해주세요.");
-            return  ResponseEntity
+            return ResponseEntity
                     .badRequest()
                     .body(e.getMessage());
         }
-
     }
 
     // 이메일 중복확인 요청 처리
-    // GET : /api/auth/check
+    // GET : /api/auth/check?email=abc@bbb.com
     @GetMapping("/check")
     public ResponseEntity<?> checkEmail(String email) {
         if (email == null || email.trim().equals("")) {
             return ResponseEntity.badRequest().body("이메일을 전달해 주세요");
         }
         boolean flag = userService.isDuplicate(email);
-        log.info("{} 중복여부? - {}", email, flag);
+        log.info("{} 중복 여부?? - {}", email, flag);
         return ResponseEntity.ok().body(flag);
     }
 
     // 로그인 요청 처리
     @PostMapping("/signin")
-    public ResponseEntity<?> signIn(@Validated @RequestBody LoginRequestDTO requestDTO) {
+    public ResponseEntity<?> signIn(
+            @Validated @RequestBody LoginRequestDTO requestDTO) {
 
         try {
             LoginResponseDTO userInfo = userService.getByCredentials(
@@ -81,7 +83,7 @@ public class UserApiController {
             return ResponseEntity
                     .ok()
                     .body(userInfo);
-        } catch (RuntimeException e ) {
+        } catch (RuntimeException e) {
             return ResponseEntity
                     .badRequest()
                     .body(LoginResponseDTO.builder()
@@ -90,4 +92,5 @@ public class UserApiController {
                     );
         }
     }
+
 }

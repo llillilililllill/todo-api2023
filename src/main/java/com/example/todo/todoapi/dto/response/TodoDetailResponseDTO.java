@@ -16,7 +16,7 @@ public class TodoDetailResponseDTO {
     private String id;
     private String title;
     private boolean done;
-    
+
     @JsonFormat(pattern = "yyyy년 MM월 dd일 a hh시 mm분 ss초")
     private LocalDateTime regDate;
 

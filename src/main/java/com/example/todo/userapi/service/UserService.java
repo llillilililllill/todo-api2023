@@ -19,9 +19,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository userRepository;
-
     private final PasswordEncoder passwordEncoder;
-
     private final TokenProvider tokenProvider;
 
     // 회원가입 처리
@@ -34,11 +32,10 @@ public class UserService {
             log.warn("Email already exists - {}", email);
             throw new DuplicatedEmailException("중복된 이메일입니다.");
         }
-
-        // 패스워드 인코등
-        String rawPassword = userSignUpDTO.getPassword();   // 평문 암호
-        String encodePassword = passwordEncoder.encode(rawPassword);
-        userSignUpDTO.setPassword(encodePassword);
+        // 패스워드 인코딩
+        String rawPassword = userSignUpDTO.getPassword(); // 평문 암호
+        String encodedPassword = passwordEncoder.encode(rawPassword); // 암호화처리
+        userSignUpDTO.setPassword(encodedPassword);
 
         UserEntity savedUser = userRepository.save(userSignUpDTO.toEntity());
 
@@ -47,7 +44,7 @@ public class UserService {
         return new UserSignUpResponseDTO(savedUser);
     }
 
-    // 이메일 중복 확인
+    // 이메일 중복확인
     public boolean isDuplicate(String email) {
         if (email == null) {
             throw new RuntimeException("이메일 값이 없습니다.");
@@ -80,3 +77,9 @@ public class UserService {
     }
 
 }
+
+
+
+
+
+

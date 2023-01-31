@@ -2,6 +2,7 @@ package com.example.todo.userapi.dto;
 
 import com.example.todo.userapi.entity.UserEntity;
 import lombok.*;
+import org.apache.catalina.User;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -29,10 +30,10 @@ public class UserSignUpDTO {
 
     // 엔터티로 변경하는 메서드
     public UserEntity toEntity() {
-        return UserEntity.builder()
-                .email(this.email)
-                .password(this.password)
-                .userName(this.userName)
-                .build();
+        UserEntity user = new UserEntity();
+        user.setUserName(this.userName);
+        user.setPassword(this.password);
+        user.setEmail(this.email);
+        return user;
     }
 }

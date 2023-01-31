@@ -10,6 +10,6 @@ import java.util.List;
 @Builder
 public class TodoListResponseDTO {
 
-    private String error;   // 에러발생시 클라이언트에게 전달할 메시지
+    private String error; // 에러발생시 클라이언트에게 전달할 메시지
     private List<TodoDetailResponseDTO> todos;
 }
